@@ -15,7 +15,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    @IBAction func updateRating(_ratingControl sender: CustomControl) {
+    @IBAction func updateRating(_ ratingControl: CustomControl) {
 //        self.title = "User Rating: \(ratingControl.value) \(stars)"
         self.title = "User Rating: N Stars"
     }

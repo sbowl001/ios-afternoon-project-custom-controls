@@ -36,7 +36,7 @@ class CustomControl: UIControl {
         for i in 0..<self.componentCount {
        
             let label = UILabel()
-            addSubview(label)
+            addSubview(label)  //why subview?
         
             
                //        In setup use a loop to create five labels (using the UILabel() constructor). Add each one as a subview. Store each label into a local array with append.
@@ -124,7 +124,52 @@ class CustomControl: UIControl {
     
     func updateValue(at touch: UITouch) {
         
-    }
+        //        Implement a loop that iterates through your component labels and detect whether each touch's location (touch.location(in: self)) is contained in each label's frame.
+        //        When a touch overlaps a label, set the control's value to that tag, update the label colors to reflect the current touch, and send an action for valueChanged.
+        
+        
+        
+        //        Stretch It's better to store the old value before changing it and only send an update when the value has changed.
+        //        Stretch Add the following UIView animation to flare the view a little when selected.
+ 
+        let oldValue = value  //whether target is notified about updated value or not
+        let touchPoint = touch.location(in: self)
+        for label in self.labels {
+            
+            if label.frame.contains(touchPoint){
+                value = label.tag
+                for i in 1...componentCount {
+                    switch i <= value {
+                    case true:
+                        labels[i - 1].textColor = componentActiveColor
+                    case false:
+                        labels[i - 1].textColor = componentInactiveColor
+                    }
+                }
+                
+         
+                label.performFlare()
+                if value != oldValue{
+                    sendActions(for: [.valueChanged])
+                }
+            }
+        }
+ 
+//
     }
     
+}
 
+    
+
+extension UIView {
+    // "Flare view" animation sequence
+    func performFlare() {
+        func flare()   { transform = CGAffineTransform(scaleX: 1.6, y: 1.6) }
+        func unflare() { transform = .identity }
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: { flare() },
+                       completion: { _ in UIView.animate(withDuration: 0.1) { unflare() }})
+    }
+}
